@@ -1,8 +1,0 @@
-peewee
-langchain_ollama
-langgraph
-langchain
-weaviate
-pymupdf4llm
-langchain_community
-gensim
