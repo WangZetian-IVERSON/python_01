@@ -1,0 +1,25 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run Tidal Spiral",
+			"type": "shell",
+			"command": "C:/Users/30502/pfad/week02/WangZetian-classpy-02/.venv/Scripts/python.exe main.py",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Run Tidal Spiral",
+			"type": "shell",
+			"command": "C:/Users/30502/pfad/week02/WangZetian-classpy-02/.venv/Scripts/python.exe",
+			"args": [
+				"main.py"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	]
+}
