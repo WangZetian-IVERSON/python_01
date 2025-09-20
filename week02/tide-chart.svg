@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="500" height="300" viewBox="0 0 500 300">
+<defs>
+</defs>
+<text x="250" y="30" font-size="24" text-anchor="middle" fill="black" font-family="Arial" font-weight="bold">Tide Statistics</text>
+<rect x="100" y="100.0" width="60" height="150.0" fill="#ff6b6b" stroke="black" stroke-width="1" />
+<text x="130.0" y="270" font-size="14" text-anchor="middle" fill="black">Max</text>
+<text x="130.0" y="90.0" font-size="12" text-anchor="middle" fill="black" font-weight="bold">2.9m</text>
+<rect x="200" y="250.0" width="60" height="0.0" fill="#4ecdc4" stroke="black" stroke-width="1" />
+<text x="230.0" y="270" font-size="14" text-anchor="middle" fill="black">Min</text>
+<text x="230.0" y="240.0" font-size="12" text-anchor="middle" fill="black" font-weight="bold">0.0m</text>
+<rect x="300" y="175.44343052589306" width="60" height="74.55656947410695" fill="#45b7d1" stroke="black" stroke-width="1" />
+<text x="330.0" y="270" font-size="14" text-anchor="middle" fill="black">Avg</text>
+<text x="330.0" y="165.44343052589306" font-size="12" text-anchor="middle" fill="black" font-weight="bold">1.4m</text>
+</svg>
