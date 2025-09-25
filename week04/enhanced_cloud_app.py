@@ -1,14 +1,27 @@
 import streamlit as st
-from openai import OpenAI
 import re
 from datetime import datetime
 import hashlib
 import requests
-from bs4 import BeautifulSoup
-from urllib.parse import urljoin, urlparse
 import io
 import tempfile
 import os
+from urllib.parse import urljoin, urlparse
+
+# 尝试导入可选依赖项
+try:
+    from openai import OpenAI
+    OPENAI_AVAILABLE = True
+except ImportError:
+    st.error("OpenAI package not found. Please install it: pip install openai")
+    OPENAI_AVAILABLE = False
+
+try:
+    from bs4 import BeautifulSoup
+    BS4_AVAILABLE = True
+except ImportError:
+    st.error("BeautifulSoup4 package not found. Please install it: pip install beautifulsoup4")
+    BS4_AVAILABLE = False
 
 # 页面配置
 st.set_page_config(
@@ -140,50 +153,31 @@ def load_custom_css():
     </style>
     """, unsafe_allow_html=True)
 
-# PDF读取功能（使用PyMuPDF代替PyPDF2）
+# PDF读取功能（云端简化版）
 def extract_pdf_text(uploaded_file):
-    """从上传的PDF文件中提取文本"""
+    """从上传的PDF文件中提取文本（云端版本）"""
     try:
-        # 尝试导入pymupdf
-        try:
-            import fitz  # PyMuPDF
-            
-            # 读取PDF文件
-            pdf_data = uploaded_file.getvalue()
-            doc = fitz.open(stream=pdf_data, filetype="pdf")
-            
-            text = ""
-            for page_num in range(len(doc)):
-                page = doc.load_page(page_num)
-                text += page.get_text() + "\n"
-            
-            doc.close()
-            return text.strip()
-            
-        except ImportError:
-            # 如果PyMuPDF不可用，尝试使用pdfplumber
-            try:
-                import pdfplumber
-                
-                text = ""
-                with pdfplumber.open(io.BytesIO(uploaded_file.getvalue())) as pdf:
-                    for page in pdf.pages:
-                        page_text = page.extract_text()
-                        if page_text:
-                            text += page_text + "\n"
-                
-                return text.strip()
-                
-            except ImportError:
-                # 如果所有PDF库都不可用，返回错误信息
-                return "PDF读取功能暂不可用：需要安装 PyMuPDF 或 pdfplumber 库。请联系管理员。"
-                
+        st.warning("⚠️ PDF读取功能在云端版本中受限。如需处理PDF文件，请：")
+        st.info("""
+        **替代方案：**
+        1. 手动复制PDF中的文本并粘贴到下方的文本输入框
+        2. 使用在线PDF转文本工具
+        3. 使用本地版本的增强聊天机器人
+        """)
+        
+        return None
+        
     except Exception as e:
-        return f"PDF读取错误：{str(e)}"
+        st.error(f"PDF处理出错: {e}")
+        return None
 
 # 网页内容读取功能
 def extract_webpage_text(url):
     """从网页URL中提取文本内容"""
+    if not BS4_AVAILABLE:
+        st.error("BeautifulSoup4 不可用，无法解析网页内容。")
+        return None
+        
     try:
         # 设置请求头，模拟浏览器访问
         headers = {
@@ -233,6 +227,9 @@ def parse_deepseek_response(response):
 @st.cache_resource
 def get_openai_client():
     """获取OpenAI客户端"""
+    if not OPENAI_AVAILABLE:
+        return None, "OpenAI库不可用"
+        
     try:
         # 从 Streamlit secrets 获取配置
         api_key = st.secrets.get("DEEPSEEK_API_KEY", None)
