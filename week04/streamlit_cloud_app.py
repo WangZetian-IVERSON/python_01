@@ -204,7 +204,7 @@ def main():
         return
     
     # 主标题
-    st.title("🤖 DeepSeek R1 Chatbot - Cloud版")
+    st.title("🤖 DeepSeek R1 Chatbot - 小小汪")
     st.markdown("基于DeepSeek R1模型的云端智能对话助手")
     
     # 侧边栏
