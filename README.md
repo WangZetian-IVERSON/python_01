@@ -99,9 +99,9 @@ pip install -r requirements.txt
 ### 启动应用
 ```bash
 streamlit run lmstudio_chatbot.py
+
+*持续学习，不断进步！* 🌟
 ## 📧 about
 
 - GitHub: [@WangZetian-IVERSON](https://github.com/WangZetian-IVERSON)
 - 项目仓库: [python_01](https://github.com/WangZetian-IVERSON/python_01)
-
-*持续学习，不断进步！* 🌟
