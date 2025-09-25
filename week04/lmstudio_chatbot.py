@@ -18,14 +18,19 @@ st.markdown("""
     padding: 1rem !important;
 }
 
+/* 侧边栏所有文本为白色 */
+.css-1d391kg, .css-1d391kg * {
+    color: white !important;
+}
+
 /* 侧边栏标题 */
 .css-1d391kg h1, .css-1d391kg h2, .css-1d391kg h3 {
-    color: #ecf0f1 !important;
+    color: white !important;
 }
 
 /* 侧边栏文本 */
-.css-1d391kg .stMarkdown {
-    color: #bdc3c7 !important;
+.css-1d391kg .stMarkdown, .css-1d391kg p, .css-1d391kg div, .css-1d391kg span {
+    color: white !important;
 }
 
 /* 侧边栏按钮 */
@@ -105,13 +110,25 @@ h1 {
 # 添加黑色字体样式
 st.markdown("""
 <style>
-/* 确保所有文本都是黑色 */
-.stApp, .main, .block-container, .element-container {
+/* 侧边栏保持白色字体 */
+.css-1d391kg, .css-1d391kg *, 
+[data-testid="stSidebar"], [data-testid="stSidebar"] * {
+    color: white !important;
+}
+
+/* 侧边栏特定元素白色字体 */
+.css-1d391kg h1, .css-1d391kg h2, .css-1d391kg h3, .css-1d391kg h4, .css-1d391kg h5, .css-1d391kg h6,
+.css-1d391kg p, .css-1d391kg div, .css-1d391kg span, .css-1d391kg .stMarkdown {
+    color: white !important;
+}
+
+/* 确保主内容区域所有文本都是黑色 */
+.stApp .main, .main .block-container, .main .element-container {
     color: #212529 !important;
 }
 
-/* Streamlit默认文本颜色 */
-p, div, span, h2, h3, h4, h5, h6 {
+/* Streamlit默认文本颜色 (主内容区域) */
+.main p, .main div, .main span, .main h1, .main h2, .main h3, .main h4, .main h5, .main h6 {
     color: #212529 !important;
 }
 
