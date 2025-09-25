@@ -87,11 +87,11 @@ Only study。
 
 ## ✨ 特性
 
-- 🤖 **双模式支持**: 自动切换本地LM Studio或DeepSeek云端API
-- 💬 **智能对话**: 支持流式响应和思考过程显示
-- 📚 **历史管理**: 侧边栏对话历史，支持新建、删除、切换对话
-- 🎨 **美观界面**: 深色侧边栏+白色文字，主内容区黑色文字
-- 🔄 **实时更新**: 流式显示AI回答过程
+- 🤖 **双模式支持**: 自动切换本地LM Studio或DeepSeek云端API （Automatically switch between local LM Studio or DeepSeek cloud APIs）
+- 💬 **智能对话**: 支持流式响应和思考过程显示 （Support streaming response and thought process display）
+- 📚 **历史管理**: 侧边栏对话历史，支持新建、删除、切换对话 （Sidebar conversation history, which supports creating, deleting, and switching conversations）
+- 🎨 **美观界面**: 深色侧边栏+白色文字，主内容区黑色文字 （Dark sidebar + white text, black text in the main content area）
+- 🔄 **实时更新**: 流式显示AI回答过程 （Streaming the AI answering process）
 
 ## 🚀 快速开始
 
