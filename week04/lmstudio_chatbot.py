@@ -102,6 +102,67 @@ h1 {
 </style>
 """, unsafe_allow_html=True)
 
+# 添加黑色字体样式
+st.markdown("""
+<style>
+/* 确保所有文本都是黑色 */
+.stApp, .main, .block-container, .element-container {
+    color: #212529 !important;
+}
+
+/* Streamlit默认文本颜色 */
+p, div, span, h2, h3, h4, h5, h6 {
+    color: #212529 !important;
+}
+
+/* 聊天消息文本颜色 */
+[data-testid="chat-message"] {
+    color: #212529 !important;
+}
+
+[data-testid="chat-message"] p, 
+[data-testid="chat-message"] div, 
+[data-testid="chat-message"] span {
+    color: #212529 !important;
+}
+
+/* 聊天输入框文本 */
+[data-testid="stChatInput"] input {
+    color: #212529 !important;
+}
+
+/* 思考过程显示 */
+.thinking-process {
+    background-color: #fff3cd !important;
+    border: 1px solid #ffeaa7 !important;
+    border-radius: 8px !important;
+    padding: 1rem !important;
+    margin: 1rem 0 !important;
+    color: #212529 !important;
+}
+
+.thinking-process h4 {
+    color: #856404 !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.thinking-process p {
+    color: #212529 !important;
+    margin: 0.5rem 0 !important;
+}
+
+/* 强制覆盖Streamlit默认样式 */
+.stMarkdown, .stText, .stCaption {
+    color: #212529 !important;
+}
+
+/* 强制所有markdown内容为黑色 */
+.stMarkdown * {
+    color: #212529 !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # Point to the local server or DeepSeek API
 @st.cache_resource
 def get_openai_client():
