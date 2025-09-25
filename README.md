@@ -73,10 +73,6 @@ Suggestions and improvements are welcome! If you have any ideas or find an issue
 
 Only study。
 
-## 📧 about
-
-- GitHub: [@WangZetian-IVERSON](https://github.com/WangZetian-IVERSON)
-- 项目仓库: [python_01](https://github.com/WangZetian-IVERSON/python_01)
 
 ---
 # 2： LM Studio DeepSeek Chatbot
@@ -103,4 +99,9 @@ pip install -r requirements.txt
 ### 启动应用
 ```bash
 streamlit run lmstudio_chatbot.py
+## 📧 about
+
+- GitHub: [@WangZetian-IVERSON](https://github.com/WangZetian-IVERSON)
+- 项目仓库: [python_01](https://github.com/WangZetian-IVERSON/python_01)
+
 *持续学习，不断进步！* 🌟
