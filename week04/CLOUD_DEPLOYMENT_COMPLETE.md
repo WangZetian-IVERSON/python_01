@@ -13,7 +13,9 @@
 - Repository: `WangZetian-IVERSON/python_01`
 - Branch: `main`
 - Main file path: `week04/streamlit_cloud_app.py` ⭐
-- Requirements file: `week04/requirements_cloud.txt`
+- **Advanced settings**:
+  - Requirements file: `week04/requirements_streamlit.txt`
+  - Python version: 3.9
 
 ### 4. 部署
 点击 **"Deploy!"**
@@ -67,10 +69,10 @@ https://yourappname-yourname.streamlit.app
 - ✅ 对话历史
 - ✅ 完整 CSS 样式
 
-### `requirements_cloud.txt` - 依赖包
+### `requirements_streamlit.txt` - 依赖包
 ```
-streamlit
-openai
+streamlit>=1.28.0
+openai>=1.0.0
 ```
 
 ---
@@ -90,7 +92,28 @@ openai
 
 ---
 
-## 🚀 快速部署链接：
+## � 故障排除
+
+### 问题1：ModuleNotFoundError: openai
+**解决方案**：
+1. 确保在 Advanced settings 中指定：`week04/requirements_streamlit.txt`
+2. 或者直接在应用目录创建 `requirements.txt`
+
+### 问题2：应用无法启动
+**检查步骤**：
+1. 点击右下角 "Manage app"
+2. 查看 Logs 获得详细错误信息
+3. 确保所有文件路径正确
+
+### 问题3：API连接失败
+**解决方案**：
+1. 检查 Secrets 配置是否正确
+2. 确保 DeepSeek API 密钥有效
+3. 检查 API 余额是否充足
+
+---
+
+## �🚀 快速部署链接：
 
 **直接部署**: https://share.streamlit.io/deploy?repository=WangZetian-IVERSON/python_01&branch=main&mainModule=week04/streamlit_cloud_app.py
 
