@@ -102,8 +102,33 @@ h1 {
 </style>
 """, unsafe_allow_html=True)
 
-# Point to the local server
-client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+# Point to the local server or DeepSeek API
+@st.cache_resource
+def get_openai_client():
+    """获取OpenAI客户端 - 支持本地和云端"""
+    try:
+        # 尝试从 Streamlit secrets 获取 DeepSeek API 配置
+        api_key = st.secrets.get("DEEPSEEK_API_KEY", None)
+        if api_key:
+            # 使用 DeepSeek API (云端版本)
+            client = OpenAI(
+                api_key=api_key,
+                base_url="https://api.deepseek.com"
+            )
+            return client, "DeepSeek API", "deepseek-chat"
+        else:
+            # 使用本地 LM Studio (本地版本)
+            client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
+            return client, "LM Studio", "deepseek/deepseek-r1-0528-qwen3-8b"
+    except Exception as e:
+        st.error(f"客户端初始化错误: {e}")
+        return None, "错误", ""
+
+# 获取客户端和模型信息
+client, client_type, model_name = get_openai_client()
+
+if not client:
+    st.stop()
 
 # 配置页面
 st.set_page_config(
@@ -114,7 +139,15 @@ st.set_page_config(
 )
 
 st.title("💬 DeepSeek Chatbot")
-st.caption("🚀 A Streamlit chatbot powered by DeepSeek R1 model via LM Studio")
+st.caption(f"🚀 A Streamlit chatbot powered by DeepSeek R1 model via {client_type}")
+
+# 显示连接状态
+if client_type == "DeepSeek API":
+    st.success("✅ 已连接到 DeepSeek 云端API")
+elif client_type == "LM Studio":
+    st.success("✅ 已连接到本地 LM Studio")
+else:
+    st.error("❌ 连接失败")
 
 # 侧边栏 - 历史对话管理
 with st.sidebar:
@@ -298,33 +331,45 @@ if prompt := st.chat_input():
     st.session_state.messages.append({"role": "user", "content": prompt})
     st.chat_message("user").write(prompt)
     
-    response = client.chat.completions.create(
-        model="deepseek/deepseek-r1-0528-qwen3-8b",
-        messages=st.session_state.messages,
-        stream=True,
-    )
-
-    msg = ""
-    assistant_message = st.chat_message("assistant")
-    message_placeholder = assistant_message.empty()
-
-    for chunk in response:
-        if chunk.choices[0].delta.content:
-            msg += chunk.choices[0].delta.content
-            
-            # Update display with formatted content
-            with message_placeholder.container():
-                display_formatted_message(msg)
-    
-    st.session_state.messages.append({"role": "assistant", "content": msg})
-    
-    # 保存到当前对话
-    if st.session_state.current_conversation_id:
-        st.session_state.conversations[st.session_state.current_conversation_id]["messages"] = st.session_state.messages.copy()
+    try:
+        response = client.chat.completions.create(
+            model=model_name,
+            messages=st.session_state.messages,
+            stream=True,
+        )
         
-        # 如果是第一条用户消息，用它来命名对话
-        user_messages = [m for m in st.session_state.messages if m["role"] == "user"]
-        if len(user_messages) == 1:
-            # 截取前20个字符作为标题
-            title = prompt[:20] + "..." if len(prompt) > 20 else prompt
-            st.session_state.conversations[st.session_state.current_conversation_id]["title"] = title
+        msg = ""
+        assistant_message = st.chat_message("assistant")
+        message_placeholder = assistant_message.empty()
+
+        for chunk in response:
+            if chunk.choices[0].delta.content:
+                msg += chunk.choices[0].delta.content
+                
+                # Update display with formatted content
+                with message_placeholder.container():
+                    display_formatted_message(msg)
+        
+        st.session_state.messages.append({"role": "assistant", "content": msg})
+        
+        # 保存到当前对话
+        if st.session_state.current_conversation_id:
+            st.session_state.conversations[st.session_state.current_conversation_id]["messages"] = st.session_state.messages.copy()
+            
+            # 如果是第一条用户消息，用它来命名对话
+            user_messages = [m for m in st.session_state.messages if m["role"] == "user"]
+            if len(user_messages) == 1:
+                # 截取前20个字符作为标题
+                title = prompt[:20] + "..." if len(prompt) > 20 else prompt
+                st.session_state.conversations[st.session_state.current_conversation_id]["title"] = title
+                
+    except Exception as e:
+        st.error(f"API调用失败: {e}")
+        if "insufficient" in str(e).lower() or "balance" in str(e).lower():
+            st.warning("⚠️ API余额不足，请充值后再试")
+        elif "connection" in str(e).lower():
+            st.warning("⚠️ 网络连接问题，请检查网络设置")
+        else:
+            st.info("请检查以下配置：")
+            st.info("- 如果使用云端版本，请确保配置了 DEEPSEEK_API_KEY")
+            st.info("- 如果使用本地版本，请确保 LM Studio 正在运行")
