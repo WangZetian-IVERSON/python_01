@@ -2,7 +2,7 @@
 
 欢迎来到我的 Python 学习项目仓库！这里包含了我在学习 Python 过程中完成的各种项目和练习。(welcome come to my repository)
 
-![Music Particle Effects](music_particle_effects.gif)
+1:![Music Particle Effects](music_particle_effects.gif)
 
 ## 🎵 特色项目
 
@@ -79,5 +79,28 @@ Only study。
 - 项目仓库: [python_01](https://github.com/WangZetian-IVERSON/python_01)
 
 ---
+# 2： LM Studio DeepSeek Chatbot
+<img width="2550" height="1397" alt="image" src="https://github.com/user-attachments/assets/1165508b-def5-4244-82f7-025c4d1ca82f" />
 
+
+一个功能完善的AI聊天机器人，基于Streamlit构建，支持本地和云端双模式。
+
+## ✨ 特性
+
+- 🤖 **双模式支持**: 自动切换本地LM Studio或DeepSeek云端API
+- 💬 **智能对话**: 支持流式响应和思考过程显示
+- 📚 **历史管理**: 侧边栏对话历史，支持新建、删除、切换对话
+- 🎨 **美观界面**: 深色侧边栏+白色文字，主内容区黑色文字
+- 🔄 **实时更新**: 流式显示AI回答过程
+
+## 🚀 快速开始
+
+### 安装依赖
+```bash
+pip install -r requirements.txt
+```
+
+### 启动应用
+```bash
+streamlit run lmstudio_chatbot.py
 *持续学习，不断进步！* 🌟
