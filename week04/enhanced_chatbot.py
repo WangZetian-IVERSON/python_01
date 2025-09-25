@@ -246,7 +246,7 @@ def main():
     client, client_info = get_openai_client()
     
     # 主标题
-    st.title("📚 DeepSeek Chatbot - 增强版")
+    st.title("📚 DeepSeek Chatbot - 小小汪")
     st.markdown("支持PDF和网页内容读取的智能对话助手")
     
     # 显示客户端状态
