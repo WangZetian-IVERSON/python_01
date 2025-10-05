@@ -1,4 +1,4 @@
-from unsloth import FastLanguageModel
+﻿from unsloth import FastLanguageModel
 from datasets import load_dataset
 from trl import SFTTrainer
 from transformers import TrainingArguments
@@ -7,50 +7,54 @@ from huggingface_hub import login
 import torch
 import os
 
-# 打印可训练参数的函数
+# 鎵撳嵃鍙缁冨弬鏁扮殑鍑芥暟
 def print_trainable_parameters(model):
     total_params = sum(p.numel() for p in model.parameters())
     trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     ratio = (trainable_params / total_params) * 100
-    print(f"总参数量: {total_params:,}")  
-    print(f"可训练参数量: {trainable_params:,}") 
-    print(f"训练参数占比: {ratio:.4f}%") 
+    print(f"鎬诲弬鏁伴噺: {total_params:,}")  
+    print(f"鍙缁冨弬鏁伴噺: {trainable_params:,}") 
+    print(f"璁粌鍙傛暟鍗犳瘮: {ratio:.4f}%") 
 
-login("REDACTED_HF_TOKEN")
+hf_token = os.environ.get("HF_TOKEN")
+if hf_token:
+    login(hf_token)
+else:
+    print("HF_TOKEN not set; skipping huggingface login")
 
-# 检查可用GPU数量
+# 妫€鏌ュ彲鐢℅PU鏁伴噺
 num_gpus = torch.cuda.device_count()
-print(f"可用GPU数量: {num_gpus}")
+print(f"鍙敤GPU鏁伴噺: {num_gpus}")
 for i in range(num_gpus):
     print(f"GPU {i}: {torch.cuda.get_device_name(i)}")
 
-# 设置为使用单个GPU以避免设备不匹配问题
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"  # 只使用第一个GPU
+# 璁剧疆涓轰娇鐢ㄥ崟涓狦PU浠ラ伩鍏嶈澶囦笉鍖归厤闂
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"  # 鍙娇鐢ㄧ涓€涓狦PU
 
 max_seq_length = 8196
 dtype = None
 load_in_4bit = True
 
-# 使用本地模型路径
+# 浣跨敤鏈湴妯″瀷璺緞
 model_path = "/root/model/Qwen2.5-VL-7B-Instruct"
 
-# 加载模型 - 使用单一设备
+# 鍔犺浇妯″瀷 - 浣跨敤鍗曚竴璁惧
 model, tokenizer = FastLanguageModel.from_pretrained(
     model_name=model_path,
     max_seq_length=max_seq_length,
     dtype=dtype,
     load_in_4bit=load_in_4bit,
-    device_map="cuda:0",  # 明确指定使用cuda:0设备
+    device_map="cuda:0",  # 鏄庣‘鎸囧畾浣跨敤cuda:0璁惧
     local_files_only=True,
     use_auth_token=None,
     trust_remote_code=True
 )
 
-# 确保tokenizer有padding token
+# 纭繚tokenizer鏈塸adding token
 if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token
 
-# 定义数据格式化函数
+# 瀹氫箟鏁版嵁鏍煎紡鍖栧嚱鏁?
 def formatting_func(examples):
     formatted_texts = []
     
@@ -76,21 +80,21 @@ Please answer the following medical question.
     
     return {"text": formatted_texts}
 
-# 加载本地JSON文件
+# 鍔犺浇鏈湴JSON鏂囦欢
 local_dataset_path = "filtered_medical_o1_sft_Chinese.json"
 dataset = load_dataset("json", data_files=local_dataset_path, split="train")
 
-# 应用格式化函数
+# 搴旂敤鏍煎紡鍖栧嚱鏁?
 dataset = dataset.map(
     formatting_func, 
     batched=True, 
     remove_columns=dataset.column_names
 )
 
-# 准备模型进行训练
+# 鍑嗗妯″瀷杩涜璁粌
 FastLanguageModel.for_training(model)
 
-# 应用LoRA微调方法
+# 搴旂敤LoRA寰皟鏂规硶
 model = FastLanguageModel.get_peft_model(
     model,
     r=16,
@@ -112,10 +116,10 @@ model = FastLanguageModel.get_peft_model(
     loftq_config=None,
 )
 
-# 打印可训练参数信息
+# 鎵撳嵃鍙缁冨弬鏁颁俊鎭?
 print_trainable_parameters(model)
 
-# 配置训练参数
+# 閰嶇疆璁粌鍙傛暟
 trainer = SFTTrainer(
     model=model,
     tokenizer=tokenizer,
@@ -141,27 +145,27 @@ trainer = SFTTrainer(
         report_to="none",
         hub_model_id=None,
         push_to_hub=False,
-        # 使用单GPU训练，不需要多GPU相关设置
+        # 浣跨敤鍗旼PU璁粌锛屼笉闇€瑕佸GPU鐩稿叧璁剧疆
     ),
 )
 
-# 开始训练
+# 寮€濮嬭缁?
 try:
     trainer_stats = trainer.train()
-    print("训练成功完成!")
+    print("璁粌鎴愬姛瀹屾垚!")
 except Exception as e:
-    print(f"训练遇到错误: {e}")
+    print(f"璁粌閬囧埌閿欒: {e}")
     import traceback
     traceback.print_exc()
 
-# 微调后加载模型进行推理
+# 寰皟鍚庡姞杞芥ā鍨嬭繘琛屾帹鐞?
 try:
     FastLanguageModel.for_inference(model)
     
-    # 定义一个测试问题
-    question = "一个患有急性阑尾炎的病人已经发病5天，腹痛稍有减轻但仍然发热，在体检时发现右下腹有压痛的包块，此时应如何处理？"
+    # 瀹氫箟涓€涓祴璇曢棶棰?
+    question = "涓€涓偅鏈夋€ユ€ч槕灏剧値鐨勭梾浜哄凡缁忓彂鐥?澶╋紝鑵圭棝绋嶆湁鍑忚交浣嗕粛鐒跺彂鐑紝鍦ㄤ綋妫€鏃跺彂鐜板彸涓嬭吂鏈夊帇鐥涚殑鍖呭潡锛屾鏃跺簲濡備綍澶勭悊锛?
     
-    # 构建输入
+    # 鏋勫缓杈撳叆
     prompt = f"""Below is an instruction that describes a task, paired with an input that provides further context.
 Write a response that appropriately completes the request.
 Before answering, think carefully about the question and create a step-by-step chain of thoughts to ensure a logical and accurate response.
@@ -176,11 +180,11 @@ Please answer the following medical question.
 ### Response:
 """
     
-    # 确保所有张量都在同一个设备上
-    device = torch.device("cuda:0")  # 明确指定使用cuda:0设备
+    # 纭繚鎵€鏈夊紶閲忛兘鍦ㄥ悓涓€涓澶囦笂
+    device = torch.device("cuda:0")  # 鏄庣‘鎸囧畾浣跨敤cuda:0璁惧
     inputs = tokenizer([prompt], return_tensors="pt").to(device)
     
-    # 使用模型生成回答
+    # 浣跨敤妯″瀷鐢熸垚鍥炵瓟
     outputs = model.generate(
         input_ids=inputs.input_ids,
         attention_mask=inputs.attention_mask,
@@ -188,15 +192,15 @@ Please answer the following medical question.
         use_cache=True,
     )
     
-    # 解码模型生成的输出
+    # 瑙ｇ爜妯″瀷鐢熸垚鐨勮緭鍑?
     response = tokenizer.batch_decode(outputs)
     print(response[0].split("### Response:")[1])
     
-    # 保存微调后的模型和tokenizer
+    # 淇濆瓨寰皟鍚庣殑妯″瀷鍜宼okenizer
     model.save_pretrained("lora_model")
     tokenizer.save_pretrained("lora_model")
     
 except Exception as e:
-    print(f"推理或保存过程中遇到错误: {e}")
+    print(f"鎺ㄧ悊鎴栦繚瀛樿繃绋嬩腑閬囧埌閿欒: {e}")
     import traceback
     traceback.print_exc()
