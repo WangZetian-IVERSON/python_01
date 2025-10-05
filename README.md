@@ -10,6 +10,9 @@ tags:
 library_name: transformers
 ---
 
+
+<img width="2436" height="1347" alt="92f2a0fe650b7fa54afe82184a473710" src="https://github.com/user-attachments/assets/5b297584-9922-4db3-99cf-6aa3415e0a9b" />
+
 # Qwen2.5-7B-Instruct
 <a href="https://chat.qwenlm.ai/" target="_blank" style="margin: 2px;">
     <img alt="Chat" src="https://img.shields.io/badge/%F0%9F%92%9C%EF%B8%8F%20Qwen%20Chat%20-536af5" style="display: inline-block; vertical-align: middle;"/>
