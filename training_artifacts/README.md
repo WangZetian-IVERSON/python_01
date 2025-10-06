@@ -1,5 +1,6 @@
 # Semantic Segmentation Training Artifacts
-![Uploading 联想截图_20251006173403(1).jpg…]()
+
+![联想截图_20251006173403(1)](https://github.com/user-attachments/assets/5af0ed5e-7d0d-4686-9484-eb7013201036)
 
 This folder contains training-related configuration, example outputs and instructions for running the semantic segmentation demo built on top of the `hszhao/semseg` codebase.
 
