@@ -1,4 +1,5 @@
 # Semantic Segmentation — Training & Demo Artifacts (Concise)
+<img width="806" height="512" alt="image" src="https://github.com/user-attachments/assets/cb4d9242-1915-45b4-8271-ec19f959e485" />
 
 This branch holds only the training artifacts produced during a local demo/training run using the `hszhao/semseg` codebase. It intentionally contains only small artifacts (configs, example outputs, and helper scripts) — large datasets and ImageNet pre-trained backbones are NOT included here for size and licensing reasons.
 
