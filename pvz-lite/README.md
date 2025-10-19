@@ -1,5 +1,11 @@
 # PVZ-Lite Framework
 
+
+
+https://github.com/user-attachments/assets/b34519c9-edfc-4c83-b268-ff449984ef6e
+
+
+
 A minimal Plants vs. Zombies–style web game framework built with vanilla HTML/CSS/JS (ES Modules). It includes:
 - Grid/lane system, basic plants, zombies, and projectiles
 - Plant placement, auto shooting, zombie attacks, kill score, game-over detection
