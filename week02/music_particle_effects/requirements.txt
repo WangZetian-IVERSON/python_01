@@ -1,5 +1,0 @@
-pygame
-librosa
-numpy
-scipy
-soundfile
