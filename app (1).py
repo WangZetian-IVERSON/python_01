@@ -87,7 +87,7 @@ def write_env_check():
     except Exception as e:
         print('[env_check] Failed to write env_check.txt:', e)
 
-# Run env check once at startup
+# Run env check once at startup  1
 write_env_check()
 
 # Tripo API key should be provided via environment variable `TRIPO_API_KEY`.
