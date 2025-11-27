@@ -73,3 +73,4 @@ If you prefer not to use an env file, you can also add the key into the ComfyUI 
 - 把 `comfy_api_simplified` 加入仓库（例如把它作为本地模块），或
 - 尝试从特定私有索引或本地路径安装该模块，
 请告诉我你希望如何提供该包（例如：私有 PyPI URL、wheel 文件、或把源码放在仓库内）。
+76
